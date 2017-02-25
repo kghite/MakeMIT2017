@@ -5,7 +5,7 @@ import random
 
 def getFaceAnalysis(img_url):
 	""" From a face image, returns a list of scores for emotion, age, and swag """
-	FACE_KEY = 'FACE_KEY_SECRET'  # Replace with a valid Subscription Key here.
+	FACE_KEY = 'c2f54d2eeabc4799a75163516444e85f'  # Replace with a valid Subscription Key here.
 	CF.Key.set(FACE_KEY)
 	face_result = CF.face.detect(img_url, attributes="age,glasses")
 	face_result = face_result[0]
@@ -23,7 +23,7 @@ def getFaceAnalysis(img_url):
 	else:
 		swag_score = random.randint(2,4)
 
-	EMOTION_KEY = 'EMOTION_KEY_SECRET'
+	EMOTION_KEY = '1c0f460689b049a3b866fadd0d702c2b'
 	headers = {
 	    # Request headers
 	    'Content-Type': 'application/json',
