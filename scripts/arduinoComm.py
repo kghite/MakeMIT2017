@@ -5,11 +5,11 @@ Arduino Communication Methods
 import serial
 
 def setupArduinoComm():
-	s = serial.Serial('/dev/ttyACM0', 9600)\
+	s = serial.Serial('/dev/ttyACM0', 9600)
 	return s
 
-def writeArduino(Serial s, str pos):
+def writeArduino(s, pos):
 	s.write(pos);
 
 def readArduino():
-	pass
+	return s.readline()
