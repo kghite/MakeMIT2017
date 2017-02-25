@@ -5,6 +5,7 @@ Main Clock Functionality
 from arduinoComm import *
 from face_analysis import *
 import cv2
+import os
 
 # Scale defaults
 emotionMax = 4
@@ -25,7 +26,7 @@ swagMaxPos = 0
 # Motor fall positions
 emotionFall = 0
 ageFall = 0
-swag = 0
+swagFall = 0
 
 # Motor current positions
 emotionCurr = emotionFall
@@ -70,24 +71,24 @@ def motionThreading(eGoal, aGoal, pGoal):
 	for i in range(1, max(eGoal, aGoal, pGoal)):
 		if emotionCurr != eGoal:
 			if emotionCurr < eGoal:
-				emotionCurr++
+				emotionCurr+=1
 				writeArduino(emotionCurr)
 			else:
-				emotionCurr--
+				emotionCurr-=1
 				writeArduino(emotionCurr)
 		if ageCurr != aGoal:
 			if ageCurr < eGoal:
-				ageCurr++
+				ageCurr+=1
 				writeArduino(ageCurr)
 			else:
-				ageCurr--
+				ageCurr-=1
 				writeArduino(ageCurr)
 		if swagCurr != sGoal:
 			if swagCurr < sGoal:
-				swagCurr++
+				swagCurr+=1
 				writeArduino(swagCurr)
 			else:
-				swagCurr--
+				swagCurr-=1
 				writeArduino(swagCurr)
 
 
@@ -110,14 +111,22 @@ if __name__ == '__main__':
 	# Set up the arduino communication
 	s = setupArduinoComm()
 
-	while 1:
+	for i in range (0,5):
 		# Get image
+		
+		if os.path.exists('image.jpeg'):
+			os.remove('image.jpeg')
 		cap = cv2.VideoCapture(0)
 		ret, img = cap.read()
+		cv2.imwrite('image.jpeg', img)
+		cap.release()
 
 		# Get image analysis
-		data = getFaceAnalysis(img)
-
+		data = getFaceAnalysis('image.jpeg')
+		
+		#if data:
+			#print data
+			
 
 
 		# If person
