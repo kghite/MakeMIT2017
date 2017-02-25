@@ -1,11 +1,15 @@
 """
 Main Clock Functionality
 """
-
+import serial
 from arduinoComm import *
 from face_analysis import *
 import cv2
 import os
+from time import sleep
+from PIL import Image
+import scipy.ndimage
+
 
 # Scale defaults
 emotionMax = 4
@@ -109,28 +113,32 @@ def fall():
 
 if __name__ == '__main__':
 	# Set up the arduino communication
-	s = setupArduinoComm()
-
-	for i in range (0,5):
-		# Get image
-		
-		if os.path.exists('image.jpeg'):
-			os.remove('image.jpeg')
-		cap = cv2.VideoCapture(0)
-		ret, img = cap.read()
-		cv2.imwrite('image.jpeg', img)
-		cap.release()
-
-		# Get image analysis
-		data = getFaceAnalysis('image.jpeg')
-		
-		#if data:
-			#print data
+	#s = setupArduinoComm()
+	cap = cv2.VideoCapture(0)
+	if cap.isOpened():
+		for i in range(0,5):
+			# Get image
+			if os.path.exists('image.jpeg'):
+				os.remove('image.jpeg')
 			
+			ret, img = cap.read()
+			cv2.imshow('image', img)
+			if cv2.waitKey(0):
+				print 'image'
 
+			
+			cv2.imwrite('image.jpeg', img)
+			
+			# Get image analysis
+			
+			data = getFaceAnalysis('image.jpeg') #[emotion_score, age_score, swag_score	
+			if data:
+				print data
+				setHands(data)
+		
+				# If person
+			# Go to data -> randomly fake out on age or swag
 
-		# If person
-		# Go to data -> randomly fake out on age or swag
-
-		# If no person
-		# Rotate between hanging mode and time mode
+			# If no person
+			# Rotate between hanging mode and time mode
+	cap.release()
