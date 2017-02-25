@@ -52,5 +52,5 @@ def getFaceAnalysis(img_url):
 	return [emotion_score, age_score, swag_score]
 
 if __name__ == '__main__':
-	getFaceAnalysis('http://stillunfold.com/public/upload/story_images/1_363_post_media_BplV.jpg')
+	getFaceAnalysis('testimage.jpg')
 
