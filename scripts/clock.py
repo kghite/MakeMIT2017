@@ -12,7 +12,6 @@ import scipy.ndimage
 import struct
 import random
 import math
-from fall import *
 
 
 # Scale defaults
@@ -95,7 +94,7 @@ def fakeOut():
 """
 Fall based on Euler equations
 """
-def fallGracefully(theta)
+def fallGracefully(theta):
     norm = (90, 200, 20)
 
     dT = 0.01
@@ -137,7 +136,7 @@ def setDataFromOpenCV():
 			ret, img = cap.read()
 			#cv2.imshow('image', img)
 			#if cv2.waitKey(5):
-				print ' '			
+			print ' '			
 			cv2.imwrite('image.jpeg', img)
 			
 			# Get image analysis
@@ -151,7 +150,7 @@ def setDataFromOpenCV():
 				setHands(data)
 				sleep(15)
 				fall()
-				
+
 	cap.release()
 
 if __name__ == '__main__':
