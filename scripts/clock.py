@@ -110,13 +110,10 @@ Falling hands behavior with swing
 def fall():
 	pass
 
-
-if __name__ == '__main__':
-	# Set up the arduino communication
-	#s = setupArduinoComm()
+def setDataFromOpenCV(duration):
 	cap = cv2.VideoCapture(0)
 	if cap.isOpened():
-		for i in range(0,20):
+		for i in range(0,duration):
 			# Get image
 			if os.path.exists('image.jpeg'):
 				os.remove('image.jpeg')
@@ -132,11 +129,18 @@ if __name__ == '__main__':
 			data = getFaceAnalysis('image.jpeg') #[emotion_score, age_score, swag_score	
 			if data:
 				print data
-				#setHands(data)
-		
-				# If person
+				setHands(data)
+
+
+			# If person
 			# Go to data -> randomly fake out on age or swag
 
 			# If no person
 			# Rotate between hanging mode and time mode
+		
 	cap.release()
+
+if __name__ == '__main__':
+	# Set up the arduino communication
+	#s = setupArduinoComm()
+	getValsFromOpenCV(30)

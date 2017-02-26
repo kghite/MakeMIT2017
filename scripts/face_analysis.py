@@ -9,7 +9,7 @@ _url =  'http:///emotion/v1.0/recognize'
 
 def getFaceAnalysis(img_url):
 	""" From a face image, returns a list of scores for emotion, age, and swag """
-	FACE_KEY = ' SECRET FACE KEY ' # Replace with a valid Subscription Key here.
+	FACE_KEY = 'SUPER SECRET FACE KEY'  # Replace with a valid Subscription Key here.
 	CF.Key.set(FACE_KEY)
 	face_result = CF.face.detect(img_url, attributes="age,glasses")
 	
@@ -24,12 +24,12 @@ def getFaceAnalysis(img_url):
 			swag_score = 1
 		elif glasses == 'ReadingGlasses':
 			swag_score = random.randint(4,6)
-		elif glasses == 'SunGlasses':
+		elif glasses == 'Sunglasses':
 			swag_score = 10
 		else:
 			swag_score = random.randint(2,4)
 
-		EMOTION_KEY = 'SECRET EMOTION KEY'
+		EMOTION_KEY = 'SUPER SECRET EMOTION KEY'
 		headers = {
 		    'Content-Type': 'application/octet-stream',
 		    'Ocp-Apim-Subscription-Key': EMOTION_KEY,
