@@ -143,4 +143,4 @@ def setDataFromOpenCV(duration):
 if __name__ == '__main__':
 	# Set up the arduino communication
 	#s = setupArduinoComm()
-	getValsFromOpenCV(30)
+	setDataFromOpenCV(30)
