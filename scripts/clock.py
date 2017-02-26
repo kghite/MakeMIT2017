@@ -10,6 +10,7 @@ from time import sleep
 from PIL import Image
 import scipy.ndimage
 import struct
+import random
 
 
 # Scale defaults
@@ -71,17 +72,23 @@ def map(value, leftMin, leftMax, rightMin, rightMax):
 
 
 """
-Faking data behavior
-"""
-def fakeOut():
-	pass
-
-
-"""
 Falling hands behavior with swing
 """
 def fall():
 	s.write(struct.pack('>BBB', emotionFall, ageFall, swagFall))
+
+
+"""
+Faking data behavior
+"""
+def fakeOut():
+	# Set arms to min swag, max age, min emotion
+	setHands([0, 0, 0])
+	sleep(5)
+
+	fall()
+	sleep(1)
+
 
 def setDataFromOpenCV():
 	cap = cv2.VideoCapture(0)
@@ -102,6 +109,9 @@ def setDataFromOpenCV():
 			data = getFaceAnalysis('image.jpeg') #[emotion_score, age_score, swag_score	
 			if data:
 				print data
+				trick = random.randint(1, 5)
+				if trick == 4:
+					fakeOut()
 				setHands(data)
 				sleep(15)
 				fall()
