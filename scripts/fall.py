@@ -1,5 +1,5 @@
 import math
-def fall(theta)
+def fallGracefully(theta)
 
     norm = (90, 200, 20)
 
