@@ -54,7 +54,6 @@ def getFaceAnalysis(img_url):
 			emotion_result = json.loads(emotion_result_json)[0]
 			emotion_score = int((emotion_result['scores']['happiness']-emotion_result['scores']['sadness'])*4) # To be scaled to 0-4 range
 			conn.close()
-			
 			return [emotion_score, age_score, swag_score]
 		    
 		except Exception as e:

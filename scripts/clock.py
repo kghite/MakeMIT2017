@@ -9,6 +9,7 @@ import os
 from time import sleep
 from PIL import Image
 import scipy.ndimage
+import struct
 
 
 # Scale defaults
@@ -20,22 +21,22 @@ swagMin = 10
 swagMax = 1
 
 # Motor range defaults
-emotionMaxPos = 0
-emotionMinPos = 0
-ageMinPos = 0
-ageMaxPos = 0
-swagMinPos = 0
-swagMaxPos = 0
+emotionMaxPos = 40
+emotionMinPos = 160
+ageMinPos = 170
+ageMaxPos = 50
+swagMinPos = 40
+swagMaxPos = 160
 
 # Motor fall positions
-emotionFall = 0
-ageFall = 0
-swagFall = 0
+emotionFall = 90
+ageFall = 200
+swagFall = 20
 
 # Motor current positions
 emotionCurr = emotionFall
 ageCurr = ageFall
-swagcurr = swagFall
+swagCurr = swagFall
 
 servoSpeedDelay = 0
 
@@ -50,8 +51,8 @@ def setHands(data):
 	sGoal = map(data[2], swagMin, swagMax, swagMinPos, swagMaxPos)
 
 	# Set hand positions
-	motionThreading(eGoal, aGoal, sGoal)
-
+	print [eGoal, aGoal, sGoal]
+	s.write(struct.pack('>BBB', eGoal, aGoal, sGoal))
 
 """
 Map helper
@@ -67,34 +68,6 @@ def map(value, leftMin, leftMax, rightMin, rightMax):
     # Convert left to right
     return rightMin + (valueScaled * rightSpan)
 
-	
-"""
-Pseudothreading helper
-"""
-def motionThreading(eGoal, aGoal, pGoal):
-	for i in range(1, max(eGoal, aGoal, pGoal)):
-		if emotionCurr != eGoal:
-			if emotionCurr < eGoal:
-				emotionCurr+=1
-				writeArduino(emotionCurr)
-			else:
-				emotionCurr-=1
-				writeArduino(emotionCurr)
-		if ageCurr != aGoal:
-			if ageCurr < eGoal:
-				ageCurr+=1
-				writeArduino(ageCurr)
-			else:
-				ageCurr-=1
-				writeArduino(ageCurr)
-		if swagCurr != sGoal:
-			if swagCurr < sGoal:
-				swagCurr+=1
-				writeArduino(swagCurr)
-			else:
-				swagCurr-=1
-				writeArduino(swagCurr)
-
 
 
 """
@@ -108,19 +81,19 @@ def fakeOut():
 Falling hands behavior with swing
 """
 def fall():
-	pass
+	s.write(struct.pack('>BBB', emotionFall, ageFall, swagFall))
 
-def setDataFromOpenCV(duration):
+def setDataFromOpenCV():
 	cap = cv2.VideoCapture(0)
 	if cap.isOpened():
-		for i in range(0,duration):
+		while 1:
 			# Get image
 			if os.path.exists('image.jpeg'):
 				os.remove('image.jpeg')
 			
 			ret, img = cap.read()
-			cv2.imshow('image', img)
-			if cv2.waitKey(5):
+			#cv2.imshow('image', img)
+			#if cv2.waitKey(5):
 				print ' '			
 			cv2.imwrite('image.jpeg', img)
 			
@@ -130,17 +103,16 @@ def setDataFromOpenCV(duration):
 			if data:
 				print data
 				setHands(data)
+				sleep(15)
+				fall()
 
-
-			# If person
-			# Go to data -> randomly fake out on age or swag
-
-			# If no person
-			# Rotate between hanging mode and time mode
 		
 	cap.release()
 
 if __name__ == '__main__':
 	# Set up the arduino communication
-	#s = setupArduinoComm()
-	setDataFromOpenCV(30)
+	s = serial.Serial('/dev/ttyACM0', 9600)
+	while 1:
+		setDataFromOpenCV()
+		sleep(5)
+		fall()
