@@ -6,6 +6,7 @@ def fall(theta)
     dT = 0.01
     g = -9.8
     l = .125
+    c = 0.2
 
     dTheta = [0, 0, 0]
     # dThetaEmote = 0
@@ -23,7 +24,7 @@ def fall(theta)
             nTheta = q - norm[i]
             nTheta = math.radians(nTheta + dT*dTheta[i])
             dTheta[i] = dTheta[i] + dT*ddTheta[i]
-            ddTheta[i] = -g/l*math.sin(math.radians(nTheta))
+            ddTheta[i] = -g/l*math.sin(math.radians(nTheta)) - c*nTheta
             theta[i] = math.degrees(nTheta + norm[i])
 
         count = count+1
