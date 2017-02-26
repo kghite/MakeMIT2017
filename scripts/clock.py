@@ -116,17 +116,15 @@ if __name__ == '__main__':
 	#s = setupArduinoComm()
 	cap = cv2.VideoCapture(0)
 	if cap.isOpened():
-		for i in range(0,5):
+		for i in range(0,20):
 			# Get image
 			if os.path.exists('image.jpeg'):
 				os.remove('image.jpeg')
 			
 			ret, img = cap.read()
 			cv2.imshow('image', img)
-			if cv2.waitKey(0):
-				print 'image'
-
-			
+			if cv2.waitKey(5):
+				print ' '			
 			cv2.imwrite('image.jpeg', img)
 			
 			# Get image analysis
@@ -134,7 +132,7 @@ if __name__ == '__main__':
 			data = getFaceAnalysis('image.jpeg') #[emotion_score, age_score, swag_score	
 			if data:
 				print data
-				setHands(data)
+				#setHands(data)
 		
 				# If person
 			# Go to data -> randomly fake out on age or swag
